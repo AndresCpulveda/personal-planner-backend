@@ -4,7 +4,7 @@ const addTask = async (req, res) => {
   const newTask = new Task(req.body)
   try {
     const savedTask = await newTask.save()
-    return res.json(savedTask)
+    res.json(savedTask)
   } catch (error) {
     console.log(error);
   }
@@ -21,4 +21,22 @@ const getTodaysTasks = async (req, res) => {
     
   }
 }
-export {addTask, getTodaysTasks}
+
+const completeTask = async (req, res) => {
+  const {_id, name, due, priority, time, completed} = req.body;
+  const toUpdate = await Task.findById(_id)
+
+  toUpdate.name = name || toUpdate.name
+  toUpdate.due = due || toUpdate.due
+  toUpdate.priority = priority || toUpdate.priority
+  toUpdate.time = time || toUpdate.time
+  toUpdate.completed = completed || toUpdate.completed
+  try {
+    const updated = await toUpdate.save()
+    res.json(updated)
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export {addTask, getTodaysTasks, completeTask}
