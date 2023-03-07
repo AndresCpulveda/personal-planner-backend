@@ -39,4 +39,18 @@ const completeTask = async (req, res) => {
   }
 }
 
-export {addTask, getTodaysTasks, completeTask}
+const deleteTask = async (req, res) => {
+  const {_id} = req.params;
+  const toRemove = await Task.findById(_id)
+  if(!toRemove) {
+    return res.status(404).json({msg: 'Record not found'})
+  }
+  try {
+    await toRemove.deleteOne()
+    res.json(toRemove)
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export {addTask, getTodaysTasks, completeTask, deleteTask}
