@@ -13,7 +13,6 @@ const addTask = async (req, res) => {
 const getTodaysTasks = async (req, res) => {
   const currentDate = new Date();
   const startOfDay = currentDate.toISOString().split('T')[0]
-  console.log(startOfDay);
   try {
     const todaysTasks = await Task.find({ due: startOfDay });
     res.json(todaysTasks);
@@ -22,8 +21,9 @@ const getTodaysTasks = async (req, res) => {
   }
 }
 
-const completeTask = async (req, res) => {
+const updateTask = async (req, res) => {
   const {_id, name, due, priority, time, completed} = req.body;
+  console.log(time);
   const toUpdate = await Task.findById(_id)
 
   toUpdate.name = name || toUpdate.name
@@ -53,4 +53,4 @@ const deleteTask = async (req, res) => {
   }
 }
 
-export {addTask, getTodaysTasks, completeTask, deleteTask}
+export {addTask, getTodaysTasks, updateTask, deleteTask}
