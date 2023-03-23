@@ -21,9 +21,17 @@ const getTodaysTasks = async (req, res) => {
   }
 }
 
+const getAllTasks = async (req, res) => {
+  try {
+    const allTasks = await Task.find()
+    res.json(allTasks)
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 const updateTask = async (req, res) => {
   const {_id, name, due, priority, time, completed} = req.body;
-  console.log(time);
   const toUpdate = await Task.findById(_id)
 
   toUpdate.name = name || toUpdate.name
@@ -53,4 +61,4 @@ const deleteTask = async (req, res) => {
   }
 }
 
-export {addTask, getTodaysTasks, updateTask, deleteTask}
+export {addTask, getTodaysTasks, updateTask, deleteTask, getAllTasks}
