@@ -1,6 +1,12 @@
 import Task from "../models/tasks.js";
 
 const addTask = async (req, res) => {
+  const currentDate = new Date;
+  const offset = currentDate.getTimezoneOffset();
+  const settedDated = currentDate.setMinutes(currentDate.getMinutes() - offset)
+  const theDate = new Date(settedDated)
+  const startOfDay = theDate.toISOString().split('T')[0]
+  req.body.createdAt = startOfDay
   const newTask = new Task(req.body)
   try {
     const savedTask = await newTask.save()
@@ -11,8 +17,11 @@ const addTask = async (req, res) => {
 }
 
 const getTodaysTasks = async (req, res) => {
-  const currentDate = new Date();
-  const startOfDay = currentDate.toISOString().split('T')[0]
+  const currentDate = new Date;
+  const offset = currentDate.getTimezoneOffset();
+  const settedDated = currentDate.setMinutes(currentDate.getMinutes() - offset)
+  const theDate = new Date(settedDated)
+  const startOfDay = theDate.toISOString().split('T')[0]
   try {
     const todaysTasks = await Task.find({ due: startOfDay });
     res.json(todaysTasks);
